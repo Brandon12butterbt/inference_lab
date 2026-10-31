@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environment
+.venv/
+
+# Test and lint caches
+.pytest_cache/
+.ruff_cache/
+
+# Environment secrets
+.env
+.env.*
+
+# Local database and benchmark results
+*.db
+*.sqlite
+*.sqlite3
+data/*
+!data/.gitkeep
+
+# Downloaded model artifacts
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+
+# Editor files
+.vscode/
+.idea/
