@@ -53,7 +53,7 @@ Let `B` be the batch size and `k` a zero-based **batch position**. Batch `k` con
 - **Memory-profile pass:** batch positions `10 … 19` (see §5).
 - **Parity check:** batch position `10` (see §3, step 5).
 - All 60 batches (positions 0–59) are assembled and placed on the target device before warm-up; nothing is tokenized, sliced, copied or transferred during timing.
-- **Cycling disclosure:** distinct fixture inputs per trial are `min(512, 50·B)`. The fixture wraps for `B ≥ 11`. Record `distinct_inputs_per_trial`.
+- **Cycling disclosure:** distinct fixture inputs per trial are `min(512, 50·B)`. Across batch positions 0–59 the fixture wraps around (indices exceed 511) when `B ≥ 9`; of the supported batch sizes this affects 16 and 32. Record `distinct_inputs_per_trial`.
 - No random shuffling. No pause or cache clearing between trials.
 
 ### 2.3 Controlled execution settings
