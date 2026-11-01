@@ -18,6 +18,8 @@ from inference_lab.errors import ErrorCode, InferenceLabError
 # --- Approved protocol constants (change only via an owner-approved revision) ---
 
 MODEL_ID = "distilbert/distilbert-base-uncased-finetuned-sst-2-english"
+# Owner-approved immutable checkpoint commit (BENCHMARK_PROTOCOL section 2).
+PINNED_MODEL_REVISION = "714eb0fa89d2f80546fda750413ed43d93601a13"
 SUPPORTED_DEVICES = ("cpu", "cuda:0")
 SUPPORTED_BATCH_SIZES = (1, 4, 8, 16, 32)
 SEQUENCE_LENGTH = 128
@@ -86,16 +88,19 @@ def _check_fixed_str(field: str, value: Any, expected: str) -> None:
         raise _invalid(field, f"must be {expected!r} under the protocol", value)
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, slots=True, kw_only=True)
 class BenchmarkConfig:
     """One benchmark configuration (device + batch size + fixed parameters).
 
-    ``model_revision`` has no default: it must be an explicit 40-character
-    lowercase hexadecimal commit hash. Only its format is checked here; the
-    exact checkpoint is pinned later in M1.
+    ``model_revision`` defaults to the approved ``PINNED_MODEL_REVISION``. An
+    explicit value must be a 40-character lowercase hexadecimal commit hash and
+    round-trips unchanged; only its format is checked here, and model loading
+    refuses any revision other than the pinned one. All fields are
+    keyword-only, which lets the defaulted ``model_revision`` precede the
+    required ``device`` and ``batch_size``.
     """
 
-    model_revision: str
+    model_revision: str = PINNED_MODEL_REVISION
     device: str
     batch_size: int
     model_id: str = MODEL_ID

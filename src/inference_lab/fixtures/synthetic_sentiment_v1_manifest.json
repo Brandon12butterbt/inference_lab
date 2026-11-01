@@ -1,0 +1,31 @@
+{
+  "manifest_version": 1,
+  "fixture_id": "synthetic-sentiment-v1",
+  "seed": 42,
+  "generator_version": 1,
+  "text_count": 512,
+  "sequence_length": 128,
+  "hashes": {
+    "text_sha256": "176cea2eb9a132a7647ab2632f8061448042477fa7a040cd02721e5d38030d2f",
+    "token_ids_sha256": "dc9da83b57e7d32ad3bc53f2dff686b6745cacc20941d2b831d7d3dd65bf98e7",
+    "attention_mask_sha256": "6e8fb30bd90854ce29410849f3112ed0686d021c0fc8f20c6dd9d1ada18e9e25"
+  },
+  "model": {
+    "model_id": "distilbert/distilbert-base-uncased-finetuned-sst-2-english",
+    "revision": "714eb0fa89d2f80546fda750413ed43d93601a13"
+  },
+  "tokenizer": {
+    "class": "BertTokenizer",
+    "is_fast": true,
+    "vocab_size": 30522,
+    "vocab_sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3",
+    "transformers_version": "5.22.1",
+    "tokenizers_version": "0.23.3"
+  },
+  "token_lengths": {
+    "min": 7,
+    "median": 33.0,
+    "max": 98,
+    "truncated_count": 0
+  }
+}

@@ -13,6 +13,7 @@ import pytest
 import inference_lab.config as config_module
 from inference_lab.config import (
     MODEL_ID,
+    PINNED_MODEL_REVISION,
     SUPPORTED_BATCH_SIZES,
     SUPPORTED_DEVICES,
     BenchmarkConfig,
@@ -265,9 +266,37 @@ def test_invalid_model_revision_format(revision):
     assert_config_invalid("model_revision", model_revision=revision)
 
 
-def test_model_revision_is_required():
+def test_model_revision_defaults_to_the_pinned_revision():
+    cfg = BenchmarkConfig(device="cpu", batch_size=8)
+    assert cfg.model_revision == PINNED_MODEL_REVISION
+    assert PINNED_MODEL_REVISION == "714eb0fa89d2f80546fda750413ed43d93601a13"
+    assert make().model_revision == SYNTHETIC_REVISION  # explicit value wins
+
+
+def test_explicit_revision_round_trips_unchanged():
+    cfg = make()
+    assert cfg.model_revision == SYNTHETIC_REVISION
+    assert BenchmarkConfig.from_json(cfg.to_json()).model_revision == SYNTHETIC_REVISION
+    pinned = BenchmarkConfig(device="cpu", batch_size=8)
+    assert BenchmarkConfig.from_dict(pinned.to_dict()) == pinned
+
+
+def test_from_dict_still_requires_model_revision():
+    data = make().to_dict()
+    del data["model_revision"]  # saved configs are never silently re-pinned
+    with pytest.raises(InferenceLabError) as excinfo:
+        BenchmarkConfig.from_dict(data)
+    assert excinfo.value.code is ErrorCode.CONFIG_INVALID
+    assert "model_revision" in excinfo.value.message
+
+
+def test_required_fields_and_keyword_only_construction():
     with pytest.raises(TypeError):
-        BenchmarkConfig(device="cpu", batch_size=8)  # type: ignore[call-arg]
+        BenchmarkConfig(device="cpu")  # type: ignore[call-arg]
+    with pytest.raises(TypeError):
+        BenchmarkConfig(batch_size=8)  # type: ignore[call-arg]
+    with pytest.raises(TypeError):
+        BenchmarkConfig("cpu", 8)  # type: ignore[misc]
 
 
 def test_unapproved_model_id_rejected():
