@@ -1,6 +1,6 @@
 # InferenceLab — Architecture v1.0 (revision r2)
 
-**Status:** Revised draft (documentation revision r2, 2026-10-31) — **pending final owner approval; no application implementation is authorized by this document.**  
+**Status:** Revision r2, approved by the owner. Implementation proceeds milestone by milestone (M1 authorized incrementally by work package); this document alone does not authorize any work package.  
 **Scope:** One-machine, local, single-user benchmarking app.  
 **Precedence (benchmarking requirements):** `BENCHMARK_PROTOCOL.md` > `SPEC.md` > `ARCHITECTURE.md` > `TASKS.md`.
 
@@ -103,7 +103,7 @@ All contracts are plain, JSON-serializable data structures (`to_dict` / `from_di
 - `trials`: 3
 - `memory_profile_forwards`: 10
 - `fixture_id`, `fixture_seed` (42)
-- `cpu_threads`: default 12
+- `cpu_threads`: hardware-aware default — physical core count from `psutil`, else logical count, else 1 — resolved to a concrete integer when the config is created without an explicit value and saved with each experiment. Explicit values must be positive integers, are never capped by local hardware, and reload unchanged from stored configs (12 on the reference machine)
 
 For real runs, validation rejects iteration counts other than the protocol values. Only unit tests with injected fake forward callables use smaller counts, and their results are never persisted as experiments.
 

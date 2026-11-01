@@ -1,6 +1,6 @@
 # InferenceLab — Implementation Roadmap and Milestones (revision r2)
 
-**Status:** Revised draft (documentation revision r2, 2026-10-31) — **pending final owner approval. Do not start application code until the owner explicitly authorizes the first milestone.**  
+**Status:** Revision r2, approved by the owner. M1 is authorized incrementally by work package (M1.1 first); do not start a later work package or milestone until the owner explicitly authorizes it.  
 **Precedence (benchmarking requirements):** `BENCHMARK_PROTOCOL.md` > `SPEC.md` > `ARCHITECTURE.md` > `TASKS.md`. Open decisions are tracked in `SPEC.md` §8.
 
 ## Workflow rules
@@ -97,7 +97,7 @@ GPU tests are marked `gpu` and skip cleanly when CUDA is unavailable. On the ref
 ## M5 — End-to-end validation and portfolio quality (≈ Week 5)
 
 **Tasks:**
-- Run tests, Ruff and real CPU/GPU benchmarks via the app; investigate variability; review the stability threshold and default `cpu_threads` against real data and propose any change as an owner-approved protocol revision.
+- Run tests, Ruff and real CPU/GPU benchmarks via the app; investigate variability; review the stability threshold and the hardware-aware `cpu_threads` default policy against real data and propose any change as an owner-approved protocol revision.
 - Validate results serialization, exact metadata, stable fixture hashes, deterministic config and memory labeling.
 - Fill README with install/usage/test instructions, research methods, screenshot/demo plan, known limitations.
 - Record actual performance results and conditions; avoid inventing benchmarks or speedups.

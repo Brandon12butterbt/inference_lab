@@ -13,7 +13,7 @@ You are assisting with a **learning-focused, local AI inference performance lab*
 
 ## Current status
 
-- **Documentation revision r2 is applied and pending final owner approval. No application code is authorized yet.** Only modify documentation after explicit approval. Before starting milestone M1, obtain clear owner authorization.
+- **Documentation revision r2 is approved by the owner. Milestone M1 is authorized, but only incrementally by work package** (M1.1 Core Configuration and Error Handling is authorized; later packages need explicit owner approval). Only modify documentation after explicit approval. Do not start M2 or later milestones without clear owner authorization.
 - Project root contains `pyproject.toml` and `uv.lock`; Python **3.12** via uv. `uv.lock` is the authority for installed dependency versions. Commands should be executed at project root.
 - Windows 11; Ryzen 9 9900X3D; 32 GB RAM; RTX 5070 Ti (16 GB VRAM).
 - Working NVIDIA CUDA PyTorch build **2.11.0+cu128**; GPU matrix multiplication has already been verified. Transformers is **5.22.1**.

@@ -1,6 +1,6 @@
 # InferenceLab — Product Specification (MVP v1.0, revision r2)
 
-**Status:** Revised draft (documentation revision r2, 2026-10-31) — **pending final owner approval. No application code is authorized.**  
+**Status:** Revision r2, approved by the owner. Implementation is authorized incrementally by work package; each package needs explicit owner approval.  
 **Prepared:** 2026-10-31  
 **Related:** `ARCHITECTURE.md`, `BENCHMARK_PROTOCOL.md`, `TASKS.md`, repository-root `CLAUDE.md`  
 **Precedence (benchmarking requirements):** `BENCHMARK_PROTOCOL.md` > `SPEC.md` > `ARCHITECTURE.md` > `TASKS.md`. If documents still conflict, stop and ask the owner.
@@ -104,7 +104,7 @@ Still open — each must be resolved explicitly, with owner approval where noted
 1. **Model revision hash** — choose and pin the exact commit during M1 (requires permission for the first model download).
 2. **Attention backend** — verify `attn_implementation="sdpa"` is supported by DistilBERT in the locked Transformers 5.22.1; if not, the owner chooses the baseline (e.g. `eager`). Also validate the explicit FP32 loading API against 5.22.1 before writing loader code; do not change installed versions as a first troubleshooting step.
 3. **Parity tolerance** — measure the real CPU/CUDA difference in M1 and confirm `atol = rtol = 1e-3`; any loosening needs owner approval.
-4. **Stability threshold (10 %)** and **default `cpu_threads = 12`** — review against real data after M2/M5.
+4. **Stability threshold (10 %)** and the **hardware-aware `cpu_threads` default** (physical cores via psutil, else logical, else 1; resolves to 12 on the reference machine and is saved with each experiment) — review against real data after M2/M5. Hardware suitability checks and warnings for explicit thread counts are deferred to the benchmark engine (M2).
 5. **Fixture source content** — vocabulary/template data and generator are authored in M1 and reviewed by the owner before the manifest hashes are committed.
 6. **Tool configuration** — pytest markers (`gpu`, `slow`, `integration`), `testpaths` and Ruff settings require editing `pyproject.toml`; this needs explicit owner approval in M1 (no dependency changes).
 7. **Worker timeout and orphaned workers** — MVP has no timeout or cancellation. If the application is killed, the worker may keep running and the experiment is later marked `interrupted`. Decide in M3 whether a simple wall-clock timeout is wanted.
