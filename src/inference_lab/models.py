@@ -279,6 +279,16 @@ def available_devices() -> list[str]:
     return devices
 
 
+def require_cuda_available(device: str = "cuda:0") -> None:
+    """Raise ``CUDA_UNAVAILABLE`` unless a usable CUDA device exists (no fallback)."""
+    if not cuda_available():
+        raise InferenceLabError(
+            ErrorCode.CUDA_UNAVAILABLE,
+            f"CUDA device {device!r} was requested but no usable CUDA device is "
+            "available on this machine. The run was not switched to the CPU.",
+        )
+
+
 def place_on_device(model: Any, device: str) -> Any:
     """Move ``model`` to the requested device; never fall back silently.
 
@@ -294,12 +304,7 @@ def place_on_device(model: Any, device: str) -> Any:
             f"Invalid device: must be 'cpu' or 'cuda:0' (got {device!r}).",
             {"field": "device", "value": repr(device)},
         )
-    if not cuda_available():
-        raise InferenceLabError(
-            ErrorCode.CUDA_UNAVAILABLE,
-            "CUDA device 'cuda:0' was requested but no usable CUDA device is "
-            "available on this machine. The run was not switched to the CPU.",
-        )
+    require_cuda_available(device)
     try:
         moved = model.to(device)
     except torch.cuda.OutOfMemoryError as exc:
